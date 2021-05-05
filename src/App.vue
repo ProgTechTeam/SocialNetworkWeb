@@ -1,38 +1,59 @@
 <template>
   <v-app>
-    <v-theme-provider>
-      <v-app-bar app color="primary" class="d-flex justify-end">
-        <v-container v-if="isAuth">
-          <v-avatar color="accent" size="36">
-            <v-icon> mdi-account-circle </v-icon>
-          </v-avatar>
-          <v-btn text class="mx-1">{{ currentUser.email }}</v-btn>
-          <v-btn @click="logout" class="mx-1" outlined>
-            <v-icon left> mdi-logout </v-icon>
-            Выйти
-          </v-btn>
-        </v-container>
-        <v-container v-else>
-          <v-btn link :to="{ name: 'Login' }" color="accent" class="mx-1">
-            Вход
-          </v-btn>
-          <v-btn link :to="{ name: 'Registration' }" class="mx-1">
-            Регистрация
-          </v-btn>
-        </v-container>
-        <!--<v-switch
-            v-model="$vuetify.theme.dark"
-            inset
-            label="Темная тема"
-        />-->
-      </v-app-bar>
+    <v-app-bar app class="d-flex">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <div class="text-h4">Dovecote</div>
+      <div v-if="isAuth">
+        <v-avatar color="accent" size="36">
+          <v-icon> mdi-account-circle</v-icon>
+        </v-avatar>
+        <v-btn text class="mx-1">{{ currentUser.email }}</v-btn>
+        <v-btn @click="logout" class="mx-1" outlined>
+          <v-icon left> mdi-logout</v-icon>
+          Выйти
+        </v-btn>
+      </div>
+      <div v-else>
+        <v-btn link :to="{ name: 'Login' }" color="accent" class="mx-1">
+          Вход
+        </v-btn>
+        <v-btn link :to="{ name: 'Registration' }" class="mx-1">
+          Регистрация
+        </v-btn>
+      </div>
+      <v-switch
+        v-model="$vuetify.theme.dark"
+        inset
+        hint="Темная тема"
+        prepend-icon="mdi-weather-night"
+        label="Темная тема"
+      />
+    </v-app-bar>
 
-      <v-main>
-        <v-container fluid>
-          <router-view></router-view>
-        </v-container>
-      </v-main>
-    </v-theme-provider>
+    <v-navigation-drawer app v-model="drawer" temporary>
+      <v-list rounded>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          link
+          :to="item.link"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-main>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
   </v-app>
 </template>
 
@@ -42,7 +63,26 @@ import { LOGOUT_REQUEST } from "./store/action-types";
 export default {
   name: "App",
   data() {
-    return {};
+    return {
+      drawer: false,
+      items: [
+        {
+          title: "Feed",
+          icon: "mdi-view-dashboard",
+          link: {
+            name: "Feed",
+          },
+        },
+        {
+          title: "Friends",
+          icon: "mdi-account-multiple",
+          link: {
+            name: "Friends",
+            params: { id: this.$store.state.auth.currentUser.id },
+          },
+        },
+      ],
+    };
   },
   computed: {
     isAuth() {
