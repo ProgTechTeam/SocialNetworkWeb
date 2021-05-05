@@ -8,10 +8,11 @@ import AllUsers from "../views/users/AllUsers";
 import Friends from "../views/users/Friends";
 import Subscribers from "../views/users/Subscribers";
 import Subscriptions from "../views/users/Subscriptions";
+import Profile from "../views/Profile";
 
 Vue.use(VueRouter);
 
-function castToInt(route) {
+function castIdToInt(route) {
   return {
     id: Number(route.params.id),
   };
@@ -41,21 +42,27 @@ const routes = [
         path: "/users/:id/friends",
         name: "Friends",
         component: Friends,
-        props: castToInt,
+        props: castIdToInt,
       },
       {
         path: "/users/:id/subscribers",
         name: "Subscribers",
         component: Subscribers,
-        props: castToInt,
+        props: castIdToInt,
       },
       {
         path: "/users/:id/subscriptions",
         name: "Subscriptions",
         component: Subscriptions,
-        props: castToInt,
+        props: castIdToInt,
       },
     ],
+  },
+  {
+    path: "/profile/:id",
+    name: "Profile",
+    component: Profile,
+    props: castIdToInt,
   },
   {
     path: "/feed",

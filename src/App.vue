@@ -2,12 +2,14 @@
   <v-app>
     <v-app-bar app class="d-flex">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <div class="text-h4">Dovecote</div>
+      <v-btn text link :to="{ name: 'Feed' }">Dovecote</v-btn>
       <div v-if="isAuth">
-        <v-avatar color="accent" size="36">
-          <v-icon> mdi-account-circle</v-icon>
-        </v-avatar>
-        <v-btn text class="mx-1">{{ currentUser.email }}</v-btn>
+        <v-btn text class="mx-1" rounded link :to="myProfileLink">
+          <v-avatar color="accent" size="36">
+            <v-icon> mdi-account-circle</v-icon>
+          </v-avatar>
+          {{ currentUser.email }}
+        </v-btn>
         <v-btn @click="logout" class="mx-1" outlined>
           <v-icon left> mdi-logout</v-icon>
           Выйти
@@ -24,7 +26,7 @@
       <v-switch
         v-model="$vuetify.theme.dark"
         inset
-        hint="Темная тема"
+        hide-details
         prepend-icon="mdi-weather-night"
         label="Темная тема"
       />
@@ -65,16 +67,28 @@ export default {
   data() {
     return {
       drawer: false,
+      myProfileLink: {
+        name: "Profile",
+        params: { id: this.$store.state.auth.currentUser.id },
+      },
       items: [
         {
-          title: "Feed",
+          title: "Мой профиль",
+          icon: "mdi-account-circle",
+          link: {
+            name: "Profile",
+            params: { id: this.$store.state.auth.currentUser.id },
+          },
+        },
+        {
+          title: "Новости",
           icon: "mdi-view-dashboard",
           link: {
             name: "Feed",
           },
         },
         {
-          title: "Friends",
+          title: "Друзья",
           icon: "mdi-account-multiple",
           link: {
             name: "Friends",
