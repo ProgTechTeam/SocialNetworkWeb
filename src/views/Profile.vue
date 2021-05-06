@@ -8,7 +8,13 @@
               ><v-icon> mdi-account-circle </v-icon></v-avatar
             >
           </v-responsive>
-          <v-btn class="mt-3" block>Редактировать</v-btn>
+          <div v-if="isMyProfile">
+            <v-btn class="mt-3" block>Редактировать</v-btn>
+          </div>
+          <div v-else>
+            <v-btn class="mt-3" block color="primary" v-if="user.subscribed" @click="unsubscribe">Отписаться</v-btn>
+            <v-btn class="mt-3" block color="primary" v-else @click="subscribe">Подписаться</v-btn>
+          </div>
         </v-card>
       </v-col>
       <v-col cols="8">
@@ -45,17 +51,30 @@
 </template>
 
 <script>
-import { FETCH_PROFILE_REQUEST } from "../store/action-types";
+import {FETCH_PROFILE_REQUEST, SUBSCRIBE_TO_USER_REQUEST, UNSUBSCRIBE_FROM_USER_REQUEST} from "../store/action-types";
 
 export default {
   name: "Profile",
   props: {
     id: Number,
   },
+  data() {
+    return {
+      isMyProfile: this.id === this.$store.state.auth.currentUser.id,
+    }
+  },
   computed: {
     user() {
       return this.$store.state.profile.userData;
     },
+  },
+  methods: {
+    subscribe: function () {
+      this.$store.dispatch(SUBSCRIBE_TO_USER_REQUEST, this.id);
+    },
+    unsubscribe: function () {
+      this.$store.dispatch(UNSUBSCRIBE_FROM_USER_REQUEST, this.id);
+    }
   },
   mounted() {
     this.$store.dispatch(FETCH_PROFILE_REQUEST, this.id);
