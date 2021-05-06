@@ -9,18 +9,19 @@ import {
   UNSUBSCRIBE_FROM_USER_REQUEST,
   UNSUBSCRIBE_FROM_USER_SUCCESS,
 } from "../action-types";
-import {get, put} from "../../core/services/http.service";
+import { get, put } from "../../core/services/http.service";
 
 function getDefaultUserData() {
   return {
     id: Number,
+    avatar: "",
     firstName: "",
     lastName: "",
     email: "",
     friends: 0,
     subscribers: 0,
     subscriptions: 0,
-    subscribed: Boolean
+    subscribed: Boolean,
   };
 }
 
@@ -44,7 +45,7 @@ const mutations = {
   [UNSUBSCRIBE_FROM_USER_SUCCESS]: (state, payload) => {
     state.userData = payload;
   },
-  [UNSUBSCRIBE_FROM_USER_ERROR]: () => {}
+  [UNSUBSCRIBE_FROM_USER_ERROR]: () => {},
 };
 
 const actions = {
@@ -60,7 +61,7 @@ const actions = {
   },
   [SUBSCRIBE_TO_USER_REQUEST]: async (context, payload) => {
     return await put(`users/${payload}/subscribe`)
-      .then(response => {
+      .then((response) => {
         const payload = response && response.data;
         context.commit(SUBSCRIBE_TO_USER_SUCCESS, payload);
       })
@@ -70,14 +71,14 @@ const actions = {
   },
   [UNSUBSCRIBE_FROM_USER_REQUEST]: async (context, payload) => {
     return await put(`users/${payload}/unsubscribe`, payload)
-      .then(response => {
+      .then((response) => {
         const payload = response && response.data;
         context.commit(UNSUBSCRIBE_FROM_USER_SUCCESS, payload);
       })
       .catch(() => {
         context.commit(UNSUBSCRIBE_FROM_USER_ERROR);
       });
-  }
+  },
 };
 
 export default {

@@ -2,85 +2,65 @@
   <v-container fluid>
     <v-row>
       <v-col cols="4">
-        <v-card class="pa-3">
-          <v-responsive :aspect-ratio="1">
-            <v-avatar size="100%" color="accent" rounded
-              ><v-icon> mdi-account-circle </v-icon></v-avatar
-            >
-          </v-responsive>
-          <div v-if="isMyProfile">
-            <v-btn class="mt-3" block>Редактировать</v-btn>
-          </div>
-          <div v-else>
-            <v-btn class="mt-3" block color="primary" v-if="user.subscribed" @click="unsubscribe">Отписаться</v-btn>
-            <v-btn class="mt-3" block color="primary" v-else @click="subscribe">Подписаться</v-btn>
-          </div>
-        </v-card>
+        <ProfileAvatarCard :user="user" :is-my-profile="isMyProfile" />
       </v-col>
       <v-col cols="8">
-        <v-card>
-          <v-card-title>{{ user.firstName }} {{ user.lastName }}</v-card-title>
-          <v-divider class="mx-3" />
-          <v-card-subtitle>{{ user.email }}</v-card-subtitle>
-          <v-divider />
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text link :to="{ name: 'Friends', params: { id: user.id } }"
-              >Друзья {{ user.friends }}</v-btn
-            >
-            <v-spacer></v-spacer>
-            <v-btn
-              text
-              link
-              :to="{ name: 'Subscribers', params: { id: user.id } }"
-              >Подписчики {{ user.subscribers }}</v-btn
-            >
-            <v-spacer></v-spacer>
-            <v-btn
-              text
-              link
-              :to="{ name: 'Subscriptions', params: { id: user.id } }"
-              >Подписки {{ user.subscriptions }}</v-btn
-            >
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
+        <ProfileInfoCard :user="user" class="mb-6" />
+        <PostCreationCard
+          :user="user"
+          :is-my-profile="isMyProfile"
+          class="mb-6"
+        />
+        <PostCard
+          v-for="post in posts"
+          :key="post.id"
+          :post-data="post"
+          class="mb-3"
+        />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import {FETCH_PROFILE_REQUEST, SUBSCRIBE_TO_USER_REQUEST, UNSUBSCRIBE_FROM_USER_REQUEST} from "../store/action-types";
+import {
+  FETCH_PROFILE_REQUEST,
+  FETCH_USER_POSTS_REQUEST,
+} from "../store/action-types";
+import ProfileAvatarCard from "../components/ProfileAvatarCard";
+import ProfileInfoCard from "../components/ProfileInfoCard";
+import PostCreationCard from "../components/PostCreationCard";
+import PostCard from "../components/PostCard";
 
 export default {
   name: "Profile",
   props: {
     id: Number,
   },
-  data() {
-    return {
-      isMyProfile: this.id === this.$store.state.auth.currentUser.id,
-    }
+  components: {
+    ProfileAvatarCard,
+    ProfileInfoCard,
+    PostCreationCard,
+    PostCard,
   },
   computed: {
     user() {
       return this.$store.state.profile.userData;
     },
-  },
-  methods: {
-    subscribe: function () {
-      this.$store.dispatch(SUBSCRIBE_TO_USER_REQUEST, this.id);
+    posts() {
+      return this.$store.getters.posts;
     },
-    unsubscribe: function () {
-      this.$store.dispatch(UNSUBSCRIBE_FROM_USER_REQUEST, this.id);
-    }
+    isMyProfile() {
+      return this.user.id === this.$store.state.auth.currentUser.id;
+    },
   },
   mounted() {
     this.$store.dispatch(FETCH_PROFILE_REQUEST, this.id);
+    this.$store.dispatch(FETCH_USER_POSTS_REQUEST, this.id);
   },
   beforeRouteUpdate(to, from, next) {
     this.$store.dispatch(FETCH_PROFILE_REQUEST, to.params.id);
+    this.$store.dispatch(FETCH_USER_POSTS_REQUEST, to.params.id);
     next();
   },
 };
