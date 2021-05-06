@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-list-item three-line link>
+    <v-list-item link :to="link">
       <v-list-item-avatar>
         <v-avatar color="accent" size="36px">
           <v-icon> mdi-account-circle </v-icon>
@@ -8,10 +8,9 @@
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <v-list-item-title class="headline mb-1">
-          {{ userData.firstName }} {{ userData.lastName }}
+        <v-list-item-title class="headline">
+          {{ userData.name }}
         </v-list-item-title>
-        <v-list-item-subtitle>{{ userData.email }}</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
   </v-card>
@@ -22,6 +21,11 @@ export default {
   name: "UserRow",
   props: {
     userData: {},
+  },
+  computed: {
+    link() {
+      return { name: "Profile", params: { id: this.userData.id } };
+    },
   },
 };
 </script>
