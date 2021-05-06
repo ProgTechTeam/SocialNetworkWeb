@@ -3,7 +3,8 @@
     <v-list-item link :to="link">
       <v-list-item-avatar>
         <v-avatar color="accent" size="36px">
-          <v-icon> mdi-account-circle </v-icon>
+          <v-img v-if="!!userData.avatar" :src="userData.avatar" alt="avatar" />
+          <v-icon v-else> mdi-account-circle </v-icon>
         </v-avatar>
       </v-list-item-avatar>
 

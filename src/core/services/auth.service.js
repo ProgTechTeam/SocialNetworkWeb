@@ -25,6 +25,7 @@ export const setDefaultCurrUser = () => {
         id: Number,
         email: "",
         role: null,
+        avatar: "",
       })
     );
   } catch (e) {
