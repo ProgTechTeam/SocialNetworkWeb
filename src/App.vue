@@ -6,7 +6,11 @@
       <div v-if="isAuth">
         <v-btn text class="mx-1" rounded link :to="myProfileLink">
           <v-avatar color="accent" size="36" class="mr-2">
-            <v-img v-if="!!currentUser.avatar" :src="currentUser.avatar" alt="avatar" />
+            <v-img
+              v-if="!!currentUser.avatar"
+              :src="currentUser.avatar"
+              alt="avatar"
+            />
             <v-icon v-else> mdi-account-circle</v-icon>
           </v-avatar>
           {{ currentUser.email }}

@@ -2,7 +2,11 @@
   <v-card>
     <v-container fluid class="d-flex justify-start align-center">
       <v-avatar size="56" color="accent" class="mr-2">
-        <img v-if="!!postData.author.avatar" :src="postData.author.avatar" alt="avatar"/>
+        <img
+          v-if="!!postData.author.avatar"
+          :src="postData.author.avatar"
+          alt="avatar"
+        />
         <v-icon v-else> mdi-account-circle</v-icon>
       </v-avatar>
 

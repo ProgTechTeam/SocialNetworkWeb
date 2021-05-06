@@ -6,7 +6,11 @@
       </v-col>
       <v-col cols="8">
         <ProfileInfoCard :user="user" class="mb-6" />
-        <PostCreationCard :user="user" :is-my-profile="isMyProfile" class="mb-6" />
+        <PostCreationCard
+          :user="user"
+          :is-my-profile="isMyProfile"
+          class="mb-6"
+        />
         <PostCard
           v-for="post in posts"
           :key="post.id"
