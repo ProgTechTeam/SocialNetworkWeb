@@ -3,7 +3,7 @@ module.exports = {
     port: 4444,
     proxy: {
       "^/api": {
-        target: "http://localhost:8080",
+        target: "https://social-network-dovecote.herokuapp.com",
         changeOrigin: true,
       },
     },
