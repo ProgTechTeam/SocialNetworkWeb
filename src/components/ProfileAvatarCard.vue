@@ -39,10 +39,10 @@ export default {
   },
   methods: {
     subscribe: function () {
-      this.$store.dispatch(SUBSCRIBE_TO_USER_REQUEST, this.id);
+      this.$store.dispatch(SUBSCRIBE_TO_USER_REQUEST, this.user.id);
     },
     unsubscribe: function () {
-      this.$store.dispatch(UNSUBSCRIBE_FROM_USER_REQUEST, this.id);
+      this.$store.dispatch(UNSUBSCRIBE_FROM_USER_REQUEST, this.user.id);
     },
   },
 };
