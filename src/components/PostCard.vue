@@ -1,14 +1,12 @@
 <template>
   <v-card>
     <v-container fluid class="d-flex justify-start align-center">
-      <v-avatar size="56" color="accent" class="mr-2">
-        <img
-          v-if="!!postData.author.avatar"
-          :src="postData.author.avatar"
-          alt="avatar"
-        />
-        <v-icon v-else> mdi-account-circle</v-icon>
-      </v-avatar>
+      <Avatar
+        :avatar="postData.author.avatar"
+        size="56px"
+        :rounded="false"
+        class="mr-2"
+      />
 
       <div class="d-flex flex-column">
         <div class="text-subtitle-1 font-weight-medium">
@@ -28,8 +26,10 @@
 </template>
 
 <script>
+import Avatar from "@/components/Avatar";
 export default {
   name: "PostCard",
+  components: { Avatar },
   props: {
     postData: {},
   },
