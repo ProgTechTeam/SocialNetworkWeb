@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     news() {
-      return this.$store.getters.news;
+      return this.$store.getters.posts;
     },
   },
   mounted() {

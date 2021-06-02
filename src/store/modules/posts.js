@@ -5,6 +5,9 @@ import {
   CREATE_USER_POST_ERROR,
   CREATE_USER_POST_REQUEST,
   CREATE_USER_POST_SUCCESS,
+  FETCH_USER_NEWS_ERROR,
+  FETCH_USER_NEWS_REQUEST,
+  FETCH_USER_NEWS_SUCCESS,
   FETCH_USER_POSTS_ERROR,
   FETCH_USER_POSTS_REQUEST,
   FETCH_USER_POSTS_SUCCESS,
@@ -45,6 +48,12 @@ const mutations = {
     state.posts[index].likedUsers = payload.likedUsers;
   },
   [CANCEL_LIKE_POST_ERROR]: () => {},
+  [FETCH_USER_NEWS_SUCCESS]: (state, payload) => {
+    state.posts = payload;
+  },
+  [FETCH_USER_NEWS_ERROR]: (state) => {
+    state.posts = [];
+  },
 };
 
 const actions = {
@@ -86,6 +95,16 @@ const actions = {
       })
       .catch(() => {
         context.commit(CANCEL_LIKE_POST_ERROR);
+      });
+  },
+  [FETCH_USER_NEWS_REQUEST]: async (context, id) => {
+    return await get(`users/${id}/news`)
+      .then((response) => {
+        const payload = response && response.data;
+        context.commit(FETCH_USER_NEWS_SUCCESS, payload);
+      })
+      .catch(() => {
+        context.commit(FETCH_USER_NEWS_ERROR);
       });
   },
 };
