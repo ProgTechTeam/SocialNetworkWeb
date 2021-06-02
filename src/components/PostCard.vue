@@ -35,6 +35,11 @@
           <span v-text="this.postData.likedUsers.length"></span>
         </v-btn>
       </v-col>
+      <div v-if="isToxic">
+        <v-col class="ml-2" cols="12" sm="10">
+          <v-chip class="ma-2" color="green" text-color="white"> Toxic </v-chip>
+        </v-col>
+      </div>
     </v-row>
   </v-card>
 </template>
@@ -43,6 +48,7 @@
 import {
   LIKE_POST_REQUEST,
   CANCEL_LIKE_POST_REQUEST,
+  FETCH_TOXIC_REQUEST,
 } from "@/store/action-types";
 
 export default {
@@ -56,6 +62,10 @@ export default {
         (element) => element.id === this.$store.state.auth.currentUser.id
       );
     },
+    isToxic() {
+      console.log(this.$store.getters.toxicRates[this.postData.id]);
+      return this.$store.getters.toxicRates[this.postData.id] > 0.8;
+    },
   },
   methods: {
     likeAction: function () {
@@ -67,10 +77,18 @@ export default {
     },
     like: function () {
       this.$store.dispatch(LIKE_POST_REQUEST, this.postData.id);
+      //this.$store.dispatch(FETCH_TOXIC_REQUEST, {"inputs": this.postData.payload});
     },
     cancelLike: function () {
       this.$store.dispatch(CANCEL_LIKE_POST_REQUEST, this.postData.id);
     },
+  },
+  mounted() {
+    this.$store.dispatch(FETCH_TOXIC_REQUEST, this.postData);
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.$store.dispatch(FETCH_TOXIC_REQUEST, this.postData /*to.params.id*/);
+    next();
   },
 };
 </script>
