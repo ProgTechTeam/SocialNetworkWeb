@@ -90,6 +90,7 @@ export default {
           icon: "mdi-view-dashboard",
           link: {
             name: "Feed",
+            params: { id: this.$store.state.auth.currentUser.id },
           },
         },
         {
