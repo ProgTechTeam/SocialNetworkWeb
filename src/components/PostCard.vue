@@ -37,7 +37,7 @@
       </v-col>
       <div v-if="isToxic">
         <v-col class="ml-2" cols="12" sm="10">
-          <v-chip class="ma-2" color="green" text-color="white"> Toxic </v-chip>
+          <v-chip class="ma-2" color="warning"> Toxic </v-chip>
         </v-col>
       </div>
     </v-row>
@@ -63,8 +63,7 @@ export default {
       );
     },
     isToxic() {
-      console.log(this.$store.getters.toxicRates[this.postData.id]);
-      return this.$store.getters.toxicRates[this.postData.id] > 0.8;
+      return this.$store.getters.isToxic(this.postData.id);
     },
   },
   methods: {
@@ -77,7 +76,6 @@ export default {
     },
     like: function () {
       this.$store.dispatch(LIKE_POST_REQUEST, this.postData.id);
-      //this.$store.dispatch(FETCH_TOXIC_REQUEST, {"inputs": this.postData.payload});
     },
     cancelLike: function () {
       this.$store.dispatch(CANCEL_LIKE_POST_REQUEST, this.postData.id);
@@ -85,10 +83,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch(FETCH_TOXIC_REQUEST, this.postData);
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.$store.dispatch(FETCH_TOXIC_REQUEST, this.postData /*to.params.id*/);
-    next();
   },
 };
 </script>

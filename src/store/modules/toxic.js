@@ -10,19 +10,18 @@ const state = () => ({
 });
 
 const getters = {
-  toxicRates: (state) => {
-    return state.toxicRates;
+  isToxic: (state) => (id) => {
+    return state.toxicRates[id] > 0.8;
   },
 };
 
 const mutations = {
   [FETCH_TOXIC_SUCCESS]: (state, payload) => {
-    state.toxicRates[payload.id] = payload.data[0][1].score;
-    console.log("state: " + state.toxicRates[payload.id]);
+    const newRates = [...state.toxicRates];
+    newRates[payload.id] = payload.data[0][1].score;
+    state.toxicRates = newRates;
   },
-  [FETCH_TOXIC_ERROR]: (state) => {
-    state.toxicRates = [];
-  },
+  [FETCH_TOXIC_ERROR]: () => {},
 };
 
 const actions = {
