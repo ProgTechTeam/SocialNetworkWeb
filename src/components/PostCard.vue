@@ -42,6 +42,11 @@
         <v-icon v-else>mdi-heart-outline</v-icon>
       </v-btn>
       <span v-text="this.postData.likedUsers.length"></span>
+      <div v-if="isToxic">
+        <v-col class="ml-2" cols="12" sm="10">
+          <v-chip class="ma-2" color="warning"> Toxic </v-chip>
+        </v-col>
+      </div>
     </v-card-actions>
   </v-card>
 </template>
@@ -50,6 +55,7 @@
 import {
   LIKE_POST_REQUEST,
   CANCEL_LIKE_POST_REQUEST,
+  FETCH_TOXIC_REQUEST,
 } from "@/store/action-types";
 import Avatar from "@/components/Avatar";
 export default {
@@ -63,6 +69,9 @@ export default {
       return this.postData.likedUsers.find(
         (element) => element.id === this.$store.state.auth.currentUser.id
       );
+    },
+    isToxic() {
+      return this.$store.getters.isToxic(this.postData.id);
     },
   },
   methods: {
@@ -82,6 +91,9 @@ export default {
     redirect: function (params) {
       this.$router.push(params);
     },
+  },
+  mounted() {
+    this.$store.dispatch(FETCH_TOXIC_REQUEST, this.postData);
   },
 };
 </script>
