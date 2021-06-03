@@ -36,16 +36,16 @@
 
     <v-divider class="mx-3" />
 
-    <v-card-actions>
-      <v-btn icon @click="likeAction" :color="isLiked ? 'pink' : ''">
-        <v-icon v-if="isLiked">mdi-heart</v-icon>
-        <v-icon v-else>mdi-heart-outline</v-icon>
-      </v-btn>
-      <span v-text="this.postData.likedUsers.length"></span>
+    <v-card-actions class="justify-space-between d-flex">
+      <div>
+        <v-btn icon @click="likeAction" :color="isLiked ? 'pink' : ''">
+          <v-icon v-if="isLiked">mdi-heart</v-icon>
+          <v-icon v-else>mdi-heart-outline</v-icon>
+        </v-btn>
+        <span v-text="this.postData.likedUsers.length"></span>
+      </div>
       <div v-if="isToxic">
-        <v-col class="ml-2" cols="12" sm="10">
-          <v-chip class="ma-2" color="warning"> Toxic </v-chip>
-        </v-col>
+        <v-chip color="warning"> Toxic </v-chip>
       </div>
     </v-card-actions>
   </v-card>
