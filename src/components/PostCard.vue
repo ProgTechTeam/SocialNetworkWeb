@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-container fluid class="d-flex justify-start align-center">
+    <v-container fluid class="d-flex align-center">
       <v-avatar size="56" color="accent" class="mr-2">
         <img
           v-if="!!postData.author.avatar"
@@ -18,6 +18,25 @@
         <div class="text-subtitle-2 text--secondary">
           {{ new Date(postData.createdAt).toDateString() }}
         </div>
+      </div>
+      <div class="pa-2">
+        <v-menu top :close-on-click="closeOnClick">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" dark outlined v-bind="attrs" v-on="on">
+              <v-icon>mdi-format-list-bulleted-square</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in complaintsTypes"
+              :key="index"
+              @click="complaint(index + 1)"
+            >
+              <v-list-item-title>{{ items[index].title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
     </v-container>
 
@@ -43,6 +62,8 @@
 import {
   LIKE_POST_REQUEST,
   CANCEL_LIKE_POST_REQUEST,
+  COMPLAINT_POST_REQUEST,
+  FETCH_COMPLAINTS_TYPES_REQUEST,
 } from "@/store/action-types";
 
 export default {
@@ -50,11 +71,24 @@ export default {
   props: {
     postData: {},
   },
+  data: () => ({
+    items: [
+      { title: "Мошенничество" },
+      { title: "Спам" },
+      { title: "Оскорбление" },
+      { title: "Детская порнография" },
+      { title: "Экстремизм" },
+    ],
+    closeOnClick: true,
+  }),
   computed: {
     isLiked() {
       return this.postData.likedUsers.find(
         (element) => element.id === this.$store.state.auth.currentUser.id
       );
+    },
+    complaintsTypes() {
+      return this.$store.state.complaints.complaintsTypes;
     },
   },
   methods: {
@@ -71,6 +105,19 @@ export default {
     cancelLike: function () {
       this.$store.dispatch(CANCEL_LIKE_POST_REQUEST, this.postData.id);
     },
+    complaint: function (index) {
+      this.$store.dispatch(COMPLAINT_POST_REQUEST, {
+        postId: this.postData.id,
+        complaintTypeId: index,
+      });
+    },
+  },
+  mounted() {
+    this.$store.dispatch(FETCH_COMPLAINTS_TYPES_REQUEST);
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.$store.dispatch(FETCH_COMPLAINTS_TYPES_REQUEST);
+    next();
   },
 };
 </script>
