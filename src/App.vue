@@ -117,6 +117,14 @@ export default {
             params: { id: currUserId },
           },
         },
+        {
+          title: "Чаты",
+          icon: "mdi-chat",
+          auth: true,
+          link: {
+            name: "NoChat",
+          },
+        },
       ];
       return items.filter((item) => !item.auth || this.$store.getters.isAuth);
     },

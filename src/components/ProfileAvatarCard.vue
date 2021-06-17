@@ -7,17 +7,12 @@
       <v-btn class="mt-3" block>Редактировать</v-btn>
     </div>
     <div v-else>
-      <v-btn
-        class="mt-3"
-        block
-        color="primary"
-        v-if="user.subscribed"
-        @click="unsubscribe"
-      >
+      <v-btn class="mt-3" block v-if="user.subscribed" @click="unsubscribe">
         Отписаться
       </v-btn>
-      <v-btn class="mt-3" block color="primary" v-else @click="subscribe">
-        Подписаться
+      <v-btn class="mt-3" block v-else @click="subscribe"> Подписаться </v-btn>
+      <v-btn class="mt-3" block color="primary" @click="openChat">
+        Написать сообщение
       </v-btn>
     </div>
   </v-card>
@@ -25,6 +20,7 @@
 
 <script>
 import {
+  FETCH_CHAT_EXISTS_REQUEST,
   SUBSCRIBE_TO_USER_REQUEST,
   UNSUBSCRIBE_FROM_USER_REQUEST,
 } from "@/store/action-types";
@@ -43,6 +39,9 @@ export default {
     },
     unsubscribe: function () {
       this.$store.dispatch(UNSUBSCRIBE_FROM_USER_REQUEST, this.user.id);
+    },
+    openChat: function () {
+      this.$store.dispatch(FETCH_CHAT_EXISTS_REQUEST, this.user);
     },
   },
 };
