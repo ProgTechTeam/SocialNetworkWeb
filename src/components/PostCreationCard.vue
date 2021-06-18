@@ -1,14 +1,13 @@
 <template>
   <v-card>
     <v-container fluid class="d-flex justify-space-between align-start">
-      <v-avatar color="accent" size="56" class="mr-2">
-        <v-img
-          v-if="!!currentUser.avatar"
-          :src="currentUser.avatar"
-          alt="avatar"
-        />
-        <v-icon v-else> mdi-account-circle </v-icon>
-      </v-avatar>
+      <Avatar
+        :avatar="currentUser.avatar"
+        size="56px"
+        :rounded="false"
+        class="mr-2"
+      />
+
       <v-textarea
         v-model="postPayload"
         auto-grow
@@ -25,10 +24,12 @@
 </template>
 
 <script>
-import { CREATE_USER_POST_REQUEST } from "../store/action-types";
+import { CREATE_USER_POST_REQUEST } from "@/store/action-types";
+import Avatar from "@/components/Avatar";
 
 export default {
   name: "PostCreationCard",
+  components: { Avatar },
   props: {
     user: {},
     isMyProfile: Boolean,
