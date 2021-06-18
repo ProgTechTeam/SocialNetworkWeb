@@ -41,7 +41,11 @@ export default {
       this.$store.dispatch(UNSUBSCRIBE_FROM_USER_REQUEST, this.user.id);
     },
     openChat: function () {
-      this.$store.dispatch(FETCH_CHAT_EXISTS_REQUEST, this.user);
+      this.$store.dispatch(FETCH_CHAT_EXISTS_REQUEST, {
+        id: this.user.id,
+        name: `${this.user.firstName} ${this.user.lastName}`,
+        avatar: this.user.avatar,
+      });
     },
   },
 };

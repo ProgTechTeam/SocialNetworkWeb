@@ -6,12 +6,15 @@
         :avatar="user ? user.avatar : ''"
       />
     </v-container>
-    <v-container class="d-flex flex-column align-center justify-center my-auto">
+    <v-container
+      fluid
+      class="d-flex flex-column align-center justify-center my-auto"
+    >
       <v-icon size="70">mdi-message-draw</v-icon>
       <p>Отправьте первое сообщение!</p>
     </v-container>
     <v-container fluid class="mt-auto pa-0">
-      <ChatTextField />
+      <ChatTextField @sendMessage="sendMessage" />
     </v-container>
   </v-container>
 </template>
@@ -19,11 +22,20 @@
 <script>
 import ChatTextField from "@/components/ChatTextField";
 import ChatHeader from "@/components/ChatHeader";
+import { CREATE_PRIVATE_CHAT_REQUEST } from "../../store/action-types";
 export default {
   name: "NewChat",
   components: { ChatHeader, ChatTextField },
   props: {
     user: {},
+  },
+  methods: {
+    sendMessage: function (payload) {
+      this.$store.dispatch(CREATE_PRIVATE_CHAT_REQUEST, {
+        user: this.user,
+        payload: payload,
+      });
+    },
   },
 };
 </script>

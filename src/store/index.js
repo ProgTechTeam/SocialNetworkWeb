@@ -5,7 +5,7 @@ import users from "./modules/users";
 import profile from "./modules/profile";
 import posts from "./modules/posts";
 import chats from "./modules/chats";
-import news from "./modules/news";
+import messages from "./modules/messages";
 
 Vue.use(Vuex);
 
@@ -16,7 +16,7 @@ export default new Vuex.Store({
     profile,
     posts,
     chats,
-    news,
+    messages,
   },
   script: true,
 });

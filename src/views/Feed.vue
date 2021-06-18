@@ -15,9 +15,6 @@ import { FETCH_USER_NEWS_REQUEST } from "@/store/action-types";
 
 export default {
   name: "Feed",
-  props: {
-    id: Number,
-  },
   components: {
     PostCard,
   },
@@ -27,11 +24,10 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch(FETCH_USER_NEWS_REQUEST, this.id);
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.$store.dispatch(FETCH_USER_NEWS_REQUEST, to.params.id);
-    next();
+    this.$store.dispatch(
+      FETCH_USER_NEWS_REQUEST,
+      this.$store.state.auth.currentUser.id
+    );
   },
 };
 </script>

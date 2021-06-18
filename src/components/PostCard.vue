@@ -1,35 +1,48 @@
 <template>
   <v-card>
-    <v-container fluid class="d-flex justify-start align-center">
-      <Avatar
-        :avatar="postData.author.avatar"
-        size="56px"
-        :rounded="false"
-        class="mr-2"
-      />
+    <v-container fluid>
+      <v-hover>
+        <template v-slot:default="{ hover }">
+          <div
+            :class="hover ? 'focused' : ''"
+            class="pointer transition-swing rounded-pill pr-2 d-flex justify-start align-center"
+            @click="
+              redirect({ name: 'Profile', params: { id: postData.author.id } })
+            "
+          >
+            <Avatar
+              :avatar="postData.author.avatar"
+              size="56px"
+              :rounded="false"
+              class="mr-2"
+            />
+            <div class="d-flex flex-column">
+              <div class="text-subtitle-1 font-weight-medium">
+                {{ postData.author.name }}
+              </div>
 
-      <div class="d-flex flex-column">
-        <div class="text-subtitle-1 font-weight-medium">
-          {{ postData.author.name }}
-        </div>
-
-        <div class="text-subtitle-2 text--secondary">
-          {{ new Date(postData.createdAt).toDateString() }}
-        </div>
-      </div>
+              <div class="text-subtitle-2 text--secondary">
+                {{ new Date(postData.createdAt).toDateString() }}
+              </div>
+            </div>
+          </div>
+        </template>
+      </v-hover>
     </v-container>
 
-    <v-container fluid>
+    <v-container>
       {{ postData.payload }}
     </v-container>
-    <v-row class="mt-12">
-      <v-col class="ml-5" cols="12" sm="3">
-        <v-btn icon @click="likeAction" :color="isLiked ? 'pink' : ''">
-          <v-icon>mdi-heart</v-icon>
-          <span v-text="this.postData.likedUsers.length"></span>
-        </v-btn>
-      </v-col>
-    </v-row>
+
+    <v-divider class="mx-3" />
+
+    <v-card-actions>
+      <v-btn icon @click="likeAction" :color="isLiked ? 'pink' : ''">
+        <v-icon v-if="isLiked">mdi-heart</v-icon>
+        <v-icon v-else>mdi-heart-outline</v-icon>
+      </v-btn>
+      <span v-text="this.postData.likedUsers.length"></span>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -66,8 +79,18 @@ export default {
     cancelLike: function () {
       this.$store.dispatch(CANCEL_LIKE_POST_REQUEST, this.postData.id);
     },
+    redirect: function (params) {
+      this.$router.push(params);
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.pointer {
+  cursor: pointer;
+}
+.focused {
+  background: rgba(192, 192, 192, 0.5);
+}
+</style>

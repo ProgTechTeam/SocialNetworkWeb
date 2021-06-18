@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card max-width="500px" class="mx-auto mt-12">
     <v-card-title>Регистрация</v-card-title>
     <v-card-text>
       <v-form>
@@ -49,7 +49,7 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn @click="register" color="primary">Зарегестрироваться</v-btn>
+      <v-btn @click="register" color="primary" block>Зарегестрироваться</v-btn>
     </v-card-actions>
   </v-card>
 </template>

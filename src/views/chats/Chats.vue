@@ -6,8 +6,9 @@
           <v-list rounded subheader>
             <v-subheader inset>Чаты</v-subheader>
             <template v-for="(item, index) in chats">
-              <ChatRow :key="item.id" :item="item" />
+              <ChatRow :key="index" :item="item" />
               <v-divider
+                class="my-1"
                 v-if="index !== chats.length - 1"
                 :key="'divider-' + item.id"
                 inset
@@ -47,6 +48,6 @@ export default {
 
 <style scoped>
 .chatView {
-  height: 600px;
+  height: 650px;
 }
 </style>

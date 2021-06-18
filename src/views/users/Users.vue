@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-tabs>
+    <v-tabs grow show-arrows center-active>
       <v-tab :to="{ name: 'AllUsers' }">Все пользователи</v-tab>
       <v-tab :to="{ name: 'Friends', params: { id: this.currentUser.id } }">
         Мои друзья

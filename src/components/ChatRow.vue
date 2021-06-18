@@ -16,13 +16,16 @@
 
     <v-list-item-content>
       <v-list-item-title class="d-flex justify-space-between">
-        <div>{{ item.name }}</div>
-        <div class="text-body-2 text--secondary">
+        <span class="text-body-2 font-weight-medium">{{ item.name }}</span>
+        <span class="text-body-2 text--secondary">
           {{ getFormattedTime(item.lastMessageTime) }}
-        </div>
+        </span>
       </v-list-item-title>
       <v-list-item-subtitle>
-        {{ item.lastMessageAuthor }}: {{ item.lastMessagePayload }}
+        <span v-if="item.lastMessageAuthor && item.lastMessagePayload">
+          {{ item.lastMessageAuthor }}: {{ item.lastMessagePayload }}
+        </span>
+        <span v-else>Сообщений нет</span>
       </v-list-item-subtitle>
     </v-list-item-content>
   </v-list-item>
@@ -39,8 +42,7 @@ export default {
   },
   methods: {
     getFormattedTime: function (timeRaw) {
-      const time = new Date(timeRaw);
-      return `${time.getHours()}:${time.getMinutes()}`;
+      return new Date(timeRaw).toUTCString().substring(5, 12);
     },
   },
 };
