@@ -65,9 +65,10 @@ const routes = [
     props: castIdToInt,
   },
   {
-    path: "/feed",
+    path: "/feed/:id",
     name: "Feed",
     component: Feed,
+    props: castIdToInt,
   },
 ];
 
