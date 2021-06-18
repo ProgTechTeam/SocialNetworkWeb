@@ -106,6 +106,7 @@ export default {
           auth: false,
           link: {
             name: "Feed",
+            params: { id: this.$store.state.auth.currentUser.id },
           },
         },
         {
