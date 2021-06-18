@@ -1,14 +1,12 @@
 <template>
   <v-card>
     <v-container fluid class="d-flex justify-start align-center">
-      <v-avatar size="56" color="accent" class="mr-2">
-        <img
-          v-if="!!postData.author.avatar"
-          :src="postData.author.avatar"
-          alt="avatar"
-        />
-        <v-icon v-else> mdi-account-circle</v-icon>
-      </v-avatar>
+      <Avatar
+        :avatar="postData.author.avatar"
+        size="56px"
+        :rounded="false"
+        class="mr-2"
+      />
 
       <div class="d-flex flex-column">
         <div class="text-subtitle-1 font-weight-medium">
@@ -26,11 +24,7 @@
     </v-container>
     <v-row class="mt-12">
       <v-col class="ml-5" cols="12" sm="3">
-        <v-btn
-          icon
-          @click="likeAction"
-          :color="/*this.likesCount*/ isLiked ? 'pink' : ''"
-        >
+        <v-btn icon @click="likeAction" :color="isLiked ? 'pink' : ''">
           <v-icon>mdi-heart</v-icon>
           <span v-text="this.postData.likedUsers.length"></span>
         </v-btn>
@@ -44,9 +38,10 @@ import {
   LIKE_POST_REQUEST,
   CANCEL_LIKE_POST_REQUEST,
 } from "@/store/action-types";
-
+import Avatar from "@/components/Avatar";
 export default {
   name: "PostCard",
+  components: { Avatar },
   props: {
     postData: {},
   },

@@ -2,10 +2,7 @@
   <v-card>
     <v-list-item link :to="link">
       <v-list-item-avatar>
-        <v-avatar color="accent" size="36px">
-          <v-img v-if="!!userData.avatar" :src="userData.avatar" alt="avatar" />
-          <v-icon v-else> mdi-account-circle </v-icon>
-        </v-avatar>
+        <Avatar :avatar="userData.avatar" size="36px" :rounded="false" />
       </v-list-item-avatar>
 
       <v-list-item-content>
@@ -18,8 +15,10 @@
 </template>
 
 <script>
+import Avatar from "@/components/Avatar";
 export default {
   name: "UserRow",
+  components: { Avatar },
   props: {
     userData: {},
   },

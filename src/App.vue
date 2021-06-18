@@ -5,14 +5,12 @@
       <v-btn text link :to="{ name: 'Feed' }">Dovecote</v-btn>
       <div v-if="isAuth">
         <v-btn text class="mx-1" rounded link :to="myProfileLink">
-          <v-avatar color="accent" size="36" class="mr-2">
-            <v-img
-              v-if="!!currentUser.avatar"
-              :src="currentUser.avatar"
-              alt="avatar"
-            />
-            <v-icon v-else> mdi-account-circle</v-icon>
-          </v-avatar>
+          <Avatar
+            :avatar="currentUser.avatar"
+            size="36px"
+            :rounded="false"
+            class="mr-2"
+          />
           {{ currentUser.email }}
         </v-btn>
         <v-btn @click="logout" class="mx-1" outlined>
@@ -40,7 +38,7 @@
     <v-navigation-drawer app v-model="drawer" temporary>
       <v-list rounded>
         <v-list-item
-          v-for="item in items"
+          v-for="item in menuItems"
           :key="item.title"
           link
           :to="item.link"
@@ -66,42 +64,14 @@
 
 <script>
 import { LOGOUT_REQUEST } from "./store/action-types";
+import Avatar from "@/components/Avatar";
 
 export default {
   name: "App",
+  components: { Avatar },
   data() {
     return {
       drawer: false,
-      myProfileLink: {
-        name: "Profile",
-        params: { id: this.$store.state.auth.currentUser.id },
-      },
-      items: [
-        {
-          title: "Мой профиль",
-          icon: "mdi-account-circle",
-          link: {
-            name: "Profile",
-            params: { id: this.$store.state.auth.currentUser.id },
-          },
-        },
-        {
-          title: "Новости",
-          icon: "mdi-view-dashboard",
-          link: {
-            name: "Feed",
-            params: { id: this.$store.state.auth.currentUser.id },
-          },
-        },
-        {
-          title: "Друзья",
-          icon: "mdi-account-multiple",
-          link: {
-            name: "Friends",
-            params: { id: this.$store.state.auth.currentUser.id },
-          },
-        },
-      ],
     };
   },
   computed: {
@@ -110,6 +80,54 @@ export default {
     },
     currentUser() {
       return this.$store.state.auth.currentUser;
+    },
+    myProfileLink() {
+      return {
+        name: "Profile",
+        params: { id: this.$store.state.auth.currentUser.id },
+      };
+    },
+    menuItems() {
+      const currUser = this.$store.state.auth.currentUser;
+      const currUserId = currUser ? currUser.id : undefined;
+      const items = [
+        {
+          title: "Мой профиль",
+          icon: "mdi-account-circle",
+          auth: true,
+          link: {
+            name: "Profile",
+            params: { id: currUserId },
+          },
+        },
+        {
+          title: "Новости",
+          icon: "mdi-view-dashboard",
+          auth: false,
+          link: {
+            name: "Feed",
+            params: { id: this.$store.state.auth.currentUser.id },
+          },
+        },
+        {
+          title: "Друзья",
+          icon: "mdi-account-multiple",
+          auth: true,
+          link: {
+            name: "Friends",
+            params: { id: currUserId },
+          },
+        },
+        {
+          title: "Чаты",
+          icon: "mdi-chat",
+          auth: true,
+          link: {
+            name: "NoChat",
+          },
+        },
+      ];
+      return items.filter((item) => !item.auth || this.$store.getters.isAuth);
     },
   },
   methods: {
